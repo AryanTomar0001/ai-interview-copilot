@@ -26,8 +26,8 @@ def retrieve_context(query):
 
     query_embedding = get_embeddings([query])[0]
     results = vector_store.search(query_embedding)
-    combined = " ".join(results)
-    return combined
+    
+    return "\n\n".join(results)
 
 
 from app.services.llm_service import llm_service
