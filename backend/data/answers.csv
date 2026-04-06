@@ -1,0 +1,165 @@
+question,answer,expected_answer,score
+Explain JWT,JWT is a token-based authentication mechanism using header payload signature to securely transmit information,JWT is a token-based authentication system using header payload signature for secure communication,90
+Explain JWT,JWT is used for authentication in web apps,JWT is a token-based authentication system using header payload signature for secure communication,60
+Explain JWT,JWT is something used in backend,I dont know JWT properly,20
+
+Explain REST API,REST API follows stateless architecture and uses HTTP methods like GET POST PUT DELETE for communication,REST APIs are stateless services that use HTTP methods for client server communication,88
+Explain REST API,API helps frontend and backend communicate,REST APIs are stateless services that use HTTP methods for client server communication,55
+Explain REST API,REST API is just an API,I dont know REST API clearly,20
+
+What is Authentication,Authentication is the process of verifying user identity using credentials like username and password,Authentication is the process of verifying identity of a user or system,90
+What is Authentication,Authentication is login system,Authentication is the process of verifying identity of a user or system,55
+What is Authentication,Authentication is security,I am not sure,25
+
+What is Authorization,Authorization determines what actions a user is allowed to perform after authentication,Authorization is the process of granting access rights to resources,90
+What is Authorization,Authorization is permissions,Authorization is the process of granting access rights to resources,60
+What is Authorization,Authorization is like login,I am not sure,20
+
+Explain OOP concepts,OOP includes concepts like encapsulation inheritance polymorphism and abstraction to design modular code,OOP is based on encapsulation inheritance polymorphism and abstraction,92
+Explain OOP concepts,OOP means object oriented programming,OOP is based on encapsulation inheritance polymorphism and abstraction,55
+Explain OOP concepts,OOP is coding style,I dont know properly,20
+
+What is Database Indexing,Indexing improves database query performance by creating data structures that allow fast lookup,Database indexing improves query speed by using data structures like B-trees,90
+What is Database Indexing,Indexing makes database fast,Database indexing improves query speed by using data structures like B-trees,60
+What is Database Indexing,Indexing is something in DB,I dont know,25
+
+What is Normalization,Normalization organizes database to reduce redundancy and improve data integrity,Normalization is the process of structuring database to reduce redundancy,88
+What is Normalization,Normalization removes duplicate data,Normalization is the process of structuring database to reduce redundancy,60
+What is Normalization,Normalization is cleaning data,I dont know,25
+
+Explain HTTP methods,HTTP methods include GET POST PUT DELETE PATCH used to perform CRUD operations,HTTP methods define actions like GET POST PUT DELETE in web communication,90
+Explain HTTP methods,GET and POST are HTTP methods,HTTP methods define actions like GET POST PUT DELETE in web communication,60
+Explain HTTP methods,HTTP methods are something in API,I dont know,20
+
+What is Microservices,Microservices architecture breaks application into small independent services that communicate via APIs,Microservices is an architecture where application is divided into small independent services,90
+What is Microservices,Microservices are small services,Microservices is an architecture where application is divided into small independent services,55
+What is Microservices,Microservices is like modules,I dont know properly,25
+
+Explain Load Balancing,Load balancing distributes incoming traffic across multiple servers to ensure reliability and performance,Load balancing distributes traffic across servers to optimize performance and availability,90
+Explain Load Balancing,Load balancing manages traffic,Load balancing distributes traffic across servers to optimize performance and availability,60
+Explain Load Balancing,Load balancing is networking,I dont know,25
+
+question,answer,expected_answer,score
+What is Caching,Caching stores frequently accessed data in memory to reduce database load and improve performance,Caching is a technique to store frequently used data in fast storage to improve performance,90
+What is Caching,Caching makes system faster by storing data,Caching is a technique to store frequently used data in fast storage to improve performance,60
+What is Caching,Caching is something related to memory,I dont know,20
+
+Explain Rate Limiting,Rate limiting restricts number of requests a user can make in a given time to prevent abuse,Rate limiting controls the number of requests to prevent system overload,90
+Explain Rate Limiting,Rate limiting limits requests,Rate limiting controls the number of requests to prevent system overload,60
+Explain Rate Limiting,Rate limiting is security,I am not sure,25
+
+What is CAP Theorem,CAP theorem states that a distributed system can provide only two of consistency availability and partition tolerance at a time,CAP theorem defines trade-offs between consistency availability and partition tolerance,92
+What is CAP Theorem,CAP theorem has consistency and availability,CAP theorem defines trade-offs between consistency availability and partition tolerance,55
+What is CAP Theorem,CAP theorem is database concept,I dont know properly,25
+
+What is Sharding,Sharding splits database into smaller parts across multiple servers to improve scalability,Sharding is a method of partitioning database into smaller chunks across servers,90
+What is Sharding,Sharding divides data,Sharding is a method of partitioning database into smaller chunks across servers,60
+What is Sharding,Sharding is something in DB,I dont know,20
+
+Explain BFS,BFS is a graph traversal algorithm that explores nodes level by level using a queue,BFS is a traversal algorithm that visits nodes level wise using queue,90
+Explain BFS,BFS is used in graphs,BFS is a traversal algorithm that visits nodes level wise using queue,55
+Explain BFS,BFS is algorithm,I dont know properly,20
+
+Explain DFS,DFS is a graph traversal algorithm that explores as far as possible before backtracking using stack or recursion,DFS is a traversal algorithm that goes deep into graph before backtracking,90
+Explain DFS,DFS is graph traversal,DFS is a traversal algorithm that goes deep into graph before backtracking,55
+Explain DFS,DFS is algorithm,I am not sure,20
+
+What is Time Complexity,Time complexity measures how execution time grows with input size using Big O notation,Time complexity describes growth of algorithm runtime with input size,90
+What is Time Complexity,Time complexity is Big O,Time complexity describes growth of algorithm runtime with input size,60
+What is Time Complexity,Time complexity is speed,I dont know,20
+
+What is Space Complexity,Space complexity measures memory usage of an algorithm relative to input size,Space complexity defines memory usage based on input size,90
+What is Space Complexity,Space complexity is memory,Space complexity defines memory usage based on input size,60
+What is Space Complexity,Space complexity is storage,I am not sure,25
+
+What is Hashing,Hashing maps data to fixed size values using hash functions for fast lookup,Hashing is a technique to map keys to values using hash functions,90
+What is Hashing,Hashing stores data fast,Hashing is a technique to map keys to values using hash functions,55
+What is Hashing,Hashing is algorithm,I dont know properly,20
+
+Explain ACID properties,ACID includes atomicity consistency isolation durability ensuring reliable database transactions,ACID properties ensure reliable transactions with atomicity consistency isolation durability,92
+Explain ACID properties,ACID is database concept,ACID properties ensure reliable transactions with atomicity consistency isolation durability,55
+Explain ACID properties,ACID is something in DB,I dont know,25
+
+
+question,answer,expected_answer,score
+Explain Database Transactions,Database transactions are sequences of operations that are executed as a single unit ensuring consistency using ACID properties,Database transactions are operations executed as a single unit that follow ACID properties to ensure data integrity,92
+Explain Database Transactions,Transactions are operations in database,Database transactions are operations executed as a single unit that follow ACID properties to ensure data integrity,60
+Explain Database Transactions,Transactions are something in DB,I dont know,25
+
+What is Deadlock,Deadlock occurs when two or more processes wait indefinitely for each other to release resources causing system halt,Deadlock is a situation where processes block each other by waiting for resources held by others,90
+What is Deadlock,Deadlock is when processes stop,Deadlock is a situation where processes block each other by waiting for resources held by others,55
+What is Deadlock,Deadlock is error,I am not sure,20
+
+Explain Multithreading,Multithreading allows concurrent execution of multiple threads within a process improving performance and responsiveness,Multithreading is a technique to run multiple threads concurrently within a process,90
+Explain Multithreading,Multithreading runs multiple tasks,Multithreading is a technique to run multiple threads concurrently within a process,60
+Explain Multithreading,Multithreading is threading,I dont know,20
+
+What is API Gateway,API Gateway acts as a single entry point for all client requests handling routing authentication and rate limiting in microservices,API Gateway is a service that manages and routes requests in a microservices architecture,92
+What is API Gateway,API Gateway manages APIs,API Gateway is a service that manages and routes requests in a microservices architecture,60
+What is API Gateway,API Gateway is API,I dont know properly,25
+
+Explain Message Queue,Message queue enables asynchronous communication between services by sending messages through a queue system like Kafka or RabbitMQ,Message queue is a system for asynchronous communication between services using queues,92
+Explain Message Queue,Message queue sends messages,Message queue is a system for asynchronous communication between services using queues,60
+Explain Message Queue,Message queue is messaging,I dont know,20
+
+What is Load Testing,Load testing evaluates system performance under expected user load to identify bottlenecks and ensure scalability,Load testing checks system behavior under expected load conditions,90
+What is Load Testing,Load testing checks performance,Load testing checks system behavior under expected load conditions,60
+What is Load Testing,Load testing is testing type,I dont know,25
+
+Explain Horizontal vs Vertical Scaling,Horizontal scaling adds more machines to handle load while vertical scaling increases resources of a single machine,Horizontal scaling adds servers while vertical scaling increases capacity of a single server,92
+Explain Horizontal vs Vertical Scaling,Horizontal is adding servers and vertical is upgrading,Horizontal scaling adds servers while vertical scaling increases capacity of a single server,65
+Explain Horizontal vs Vertical Scaling,Scaling is increasing system,I dont know properly,25
+
+What is CDN,CDN distributes static content across geographically distributed servers to reduce latency and improve user experience,CDN is a network of servers that deliver content closer to users to improve performance,90
+What is CDN,CDN makes website fast,CDN is a network of servers that deliver content closer to users to improve performance,60
+What is CDN,CDN is network,I am not sure,25
+
+Explain WebSockets,WebSockets provide full duplex communication between client and server enabling real time data transfer,WebSockets allow continuous bidirectional communication between client and server,90
+Explain WebSockets,WebSockets are real time communication,WebSockets allow continuous bidirectional communication between client and server,60
+Explain WebSockets,WebSockets is protocol,I dont know,25
+
+What is Idempotency,Idempotency means performing the same operation multiple times results in the same outcome without side effects,Idempotency ensures repeated operations produce the same result without changing state multiple times,92
+What is Idempotency,Idempotency means same result,Idempotency ensures repeated operations produce the same result without changing state multiple times,60
+What is Idempotency,Idempotency is concept,I dont know,25
+
+
+question,answer,expected_answer,score
+What is Consistency in CAP,Consistency means every read receives the most recent write or an error ensuring all nodes return same data,Consistency in CAP ensures all nodes see the same data at the same time,92
+What is Consistency in CAP,Consistency means data should be correct,Consistency in CAP ensures all nodes see the same data at the same time,60
+What is Consistency in CAP,Consistency is database rule,I dont know properly,25
+
+Explain Eventual Consistency,Eventual consistency means system will become consistent over time without guaranteeing immediate consistency after writes,Eventual consistency ensures that all replicas converge to same state eventually,92
+Explain Eventual Consistency,Eventual consistency means data is updated later,Eventual consistency ensures that all replicas converge to same state eventually,65
+Explain Eventual Consistency,Eventual consistency is delay,I dont know properly,30
+
+What is Strong Consistency,Strong consistency ensures that after a write all subsequent reads return the latest value across all nodes,Strong consistency guarantees immediate visibility of latest data after write,92
+What is Strong Consistency,Strong consistency means data is strong,Strong consistency guarantees immediate visibility of latest data after write,40
+What is Strong Consistency,Strong consistency is consistency type,I dont know,20
+
+Explain Race Condition,Race condition occurs when multiple threads access shared data concurrently and result depends on execution order leading to unpredictable behavior,Race condition is a condition where outcome depends on timing of concurrent threads,92
+Explain Race Condition,Race condition is when threads conflict,Race condition is a condition where outcome depends on timing of concurrent threads,60
+Explain Race Condition,Race condition is error,I dont know properly,25
+
+What is Thread Safety,Thread safety ensures that shared data is accessed correctly by multiple threads without causing inconsistencies or corruption,Thread safety means code works correctly in multi-threaded environment,90
+What is Thread Safety,Thread safety means safe threads,Thread safety means code works correctly in multi-threaded environment,40
+What is Thread Safety,Thread safety is threading concept,I dont know,20
+
+Explain Idempotent APIs,Idempotent APIs return same result even if request is repeated multiple times like PUT or DELETE operations,Idempotent APIs ensure repeated requests have same effect without side effects,92
+Explain Idempotent APIs,Idempotent APIs give same result,Idempotent APIs ensure repeated requests have same effect without side effects,60
+Explain Idempotent APIs,Idempotent APIs are APIs,I dont know properly,20
+
+What is Distributed Lock,Distributed lock ensures only one process accesses a shared resource across distributed systems preventing conflicts,Distributed lock is a mechanism to synchronize access to shared resources in distributed systems,92
+What is Distributed Lock,Distributed lock locks system,Distributed lock is a mechanism to synchronize access to shared resources in distributed systems,50
+What is Distributed Lock,Distributed lock is locking,I dont know,20
+
+Explain Circuit Breaker Pattern,Circuit breaker pattern prevents system from repeatedly calling failing services by stopping requests temporarily and allowing recovery,Circuit breaker pattern stops calls to failing services to prevent cascading failures,92
+Explain Circuit Breaker Pattern,Circuit breaker stops failures,Circuit breaker pattern stops calls to failing services to prevent cascading failures,60
+Explain Circuit Breaker Pattern,Circuit breaker is pattern,I dont know,25
+
+What is Backpressure,Backpressure is a mechanism to control data flow when producer is faster than consumer preventing system overload,Backpressure controls flow of data to avoid overwhelming system,92
+What is Backpressure,Backpressure is controlling data,Backpressure controls flow of data to avoid overwhelming system,60
+What is Backpressure,Backpressure is pressure,I dont know properly,20
+
+Explain Exactly Once Processing,Exactly once processing ensures each message is processed only once without duplication even in distributed systems,Exactly once processing guarantees no duplicate processing of messages,92
+Explain Exactly Once Processing,Exactly once means process once,Exactly once processing guarantees no duplicate processing of messages,60
+Explain Exactly Once Processing,Exactly once is processing,I dont know,20
