@@ -18,7 +18,7 @@ app.include_router(resume.router)
 def home():
     return {"message": "Backend is running 🚀"}
 
-from app.services.rag_service import retrieve_context
+# from app.services.rag_service import retrieve_context
 
 # @app.get("/test-retrieval")
 # def test():
