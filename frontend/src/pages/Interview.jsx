@@ -76,7 +76,7 @@ function Interview() {
     );
 
     try {
-      const res = await API.post("/evaluate", formData);
+      const res = await API.post("/evaluate/", formData);
       setResult(res.data);
       navigate("/result");
     } catch (err) {
