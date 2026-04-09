@@ -3,10 +3,11 @@ import { AppContext } from "../context/AppContext";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import QuestionCard from "../components/QuestionCard";
+import Navbar from "../components/Navbar";
 import { Loader2 } from "lucide-react";
 
 function Questions() {
-  const { questions, setQuestions, setSelectedQuestion } = useContext(AppContext);
+  const { questions, setQuestions, setSelectedQuestion, isQuestionCompleted, generateAttemptId } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ function Questions() {
     setLoading(true);
     setError("");
     try {
-      const res = await API.get("/questions/generate");
+      const res = await API.get("/questions/generate/");
       setQuestions(res.data);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to generate questions. Please try again.");
@@ -31,7 +32,11 @@ function Questions() {
   };
 
   const handleSelect = (q) => {
+    if (isQuestionCompleted(q.question)) {
+      return;
+    }
     setSelectedQuestion(q);
+    generateAttemptId();
     navigate("/interview");
   };
 
@@ -65,57 +70,62 @@ function Questions() {
   if (!questions) return null;
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Your Interview Questions
-          </h1>
-          <p className="text-gray-600">
-            Select a question to start practicing your answer
-          </p>
+    <>
+      <Navbar />
+      <div className="min-h-screen">
+        <div className="max-w-4xl mx-auto px-4 md:px-6 py-6">
+          <div className="mb-6">
+            <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-2">
+              Your Interview Questions
+            </h1>
+            <p className="text-sm md:text-base text-gray-600 break-words whitespace-normal">
+              Select a question to start practicing your answer
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-4">
+          {questions.technical && questions.technical.length > 0 && (
+            <div>
+              <h2 className="text-base md:text-lg font-semibold text-gray-800 mb-3">
+                💻 Technical Questions
+              </h2>
+              <div className="flex flex-col gap-4">
+                {questions.technical.map((q, i) => (
+                  <QuestionCard key={i} question={q} onSelect={handleSelect} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {questions.hr && questions.hr.length > 0 && (
+            <div>
+              <h2 className="text-base md:text-lg font-semibold text-gray-800 mb-3">
+                👥 HR Questions
+              </h2>
+              <div className="flex flex-col gap-4">
+                {questions.hr.map((q, i) => (
+                  <QuestionCard key={i} question={q} onSelect={handleSelect} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {questions.project && questions.project.length > 0 && (
+            <div>
+              <h2 className="text-base md:text-lg font-semibold text-gray-800 mb-3">
+                🚀 Project-Based Questions
+              </h2>
+              <div className="flex flex-col gap-4">
+                {questions.project.map((q, i) => (
+                  <QuestionCard key={i} question={q} onSelect={handleSelect} />
+                ))}
+              </div>
+            </div>
+          )}
+          </div>
         </div>
-
-        {questions.technical && questions.technical.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              💻 Technical Questions
-            </h2>
-            <div className="space-y-4">
-              {questions.technical.map((q, i) => (
-                <QuestionCard key={i} question={q} onSelect={handleSelect} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {questions.hr && questions.hr.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              👥 HR Questions
-            </h2>
-            <div className="space-y-4">
-              {questions.hr.map((q, i) => (
-                <QuestionCard key={i} question={q} onSelect={handleSelect} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {questions.project && questions.project.length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              🚀 Project-Based Questions
-            </h2>
-            <div className="space-y-4">
-              {questions.project.map((q, i) => (
-                <QuestionCard key={i} question={q} onSelect={handleSelect} />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+    </>
   );
 }
 
