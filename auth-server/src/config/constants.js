@@ -1,0 +1,5 @@
+module.exports = {
+  MAX_DAILY_ATTEMPTS: 5,
+  MAX_DAILY_RESUME_UPLOADS: 3,
+  JWT_COOKIE_EXPIRE: 7
+};

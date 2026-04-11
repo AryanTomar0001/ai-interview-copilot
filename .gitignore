@@ -1,14 +1,212 @@
-# Backend (Python)
+# ========================================
+# Python / FastAPI Backend
+# ========================================
 backend/venv/
+backend/env/
+backend/.venv/
 backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.Python
+backend/pip-log.txt
+backend/pip-delete-this-directory.txt
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+backend/dist/
+backend/build/
+backend/*.egg-info/
 backend/.env
+backend/.env.local
 
-# Frontend (React/Node)
+# ========================================
+# Node.js / Express Auth Server
+# ========================================
+auth-server/node_modules/
+auth-server/.env
+auth-server/.env.local
+auth-server/npm-debug.log*
+auth-server/yarn-debug.log*
+auth-server/yarn-error.log*
+auth-server/dist/
+auth-server/build/
+
+# ========================================
+# React / Vite Frontend
+# ========================================
 frontend/node_modules/
+frontend/dist/
+frontend/build/
 frontend/.env
+frontend/.env.local
+frontend/.env.production
+frontend/.env.development
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.vite/
+frontend/.cache/
 
-# General
-__pycache__/
-*.pyc
+# ========================================
+# Jupyter Notebooks
+# ========================================
+notebooks/.ipynb_checkpoints/
+notebooks/**/.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ========================================
+# Environment Variables (ALL)
+# ========================================
 .env
+.env.local
+.env.development
+.env.production
+.env.test
+*.env
+
+# ========================================
+# API Keys & Secrets
+# ========================================
+**/secrets/
+**/*.pem
+**/*.key
+**/credentials.json
+**/*-key.json
+
+# ========================================
+# Database Files
+# ========================================
+*.db
+*.sqlite
+*.sqlite3
+*.sql
+
+# ========================================
+# Logs
+# ========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ========================================
+# OS Files
+# ========================================
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ========================================
+# IDE / Editor Files
+# ========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# ========================================
+# Python General
+# ========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# ========================================
+# Node.js General
+# ========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ========================================
+# Build Outputs
+# ========================================
+dist/
+build/
+out/
+*.egg-info/
+*.egg
+
+# ========================================
+# Temporary Files
+# ========================================
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# ========================================
+# Docker
+# ========================================
+.dockerignore
+docker-compose.override.yml
+
+# ========================================
+# ML Models & Data (if large)
+# ========================================
+*.h5
+*.pkl
+*.pickle
+*.joblib
+*.model
+*.weights
+models/large/
+data/raw/
+data/processed/
+
+# ========================================
+# Audio/Video Files (if temporary)
+# ========================================
+*.wav
+*.mp3
+*.mp4
+*.webm
+*.ogg
+uploads/
+temp_audio/
+
+# ========================================
+# Keep These Files
+# ========================================
+!.gitkeep
+!.env.example
