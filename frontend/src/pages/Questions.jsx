@@ -21,7 +21,7 @@ function Questions() {
     setLoading(true);
     setError("");
     try {
-      const res = await API.get("/questions/generate/");
+      const res = await API.get("/questions/generate");
       setQuestions(res.data);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to generate questions. Please try again.");
