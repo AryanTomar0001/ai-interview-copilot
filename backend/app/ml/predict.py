@@ -2,26 +2,20 @@ import pickle
 import os
 from app.utils.feature_engineering import extract_features
 
-# =========================
-# 📁 PATH SETUP
-# =========================
+#  PATH SETUP
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 model_path = os.path.join(BASE_DIR, "model.pkl")
 scaler_path = os.path.join(BASE_DIR, "scaler.pkl")
 
-# =========================
-# 🔄 LOAD MODEL
-# =========================
+#  LOAD MODEL
 with open(model_path, "rb") as f:
     model = pickle.load(f)
 
 with open(scaler_path, "rb") as f:
     scaler = pickle.load(f)
 
-# =========================
-# 🎯 PREDICT
-# =========================
+#  PREDICT
 def predict_score(answer: str, expected: str):
     features = extract_features(answer, expected)
 
