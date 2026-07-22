@@ -58,7 +58,7 @@ class LLMService:
                 "raw_response": text
             }
     # ================================
-    # 🔥 QUESTION GENERATION
+    #  QUESTION GENERATION
     # ================================
     def generate_questions(self, context: str) -> Dict[str, Any]:
         system_prompt = """
