@@ -158,7 +158,18 @@ Return JSON:
             return self._safe_json_load(raw)
 
         except Exception as e:
-            return {"error": str(e)}
+            print("\n====== INVALID LLM JSON ======")
+            print(text)
+            print("==============================\n")
+
+            return {
+            "missing": [],
+            "improvements": [
+             "AI feedback could not be generated."
+            ],
+            "ideal_answer": "",
+            "error": str(e)
+    }
 
 
 # Singleton instance

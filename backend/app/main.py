@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from app.api.v1 import resume
 from fastapi.middleware.cors import CORSMiddleware
 from app.exceptions.handlers import global_exception_handler
+
 app = FastAPI(title="AI Interview Copilot")
 
 app.add_middleware(

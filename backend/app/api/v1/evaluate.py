@@ -5,25 +5,27 @@ import os
 from app.services.speech_service import speech_to_text
 from app.services.scoring_service import evaluate_answer
 from app.services.feedback_service import generate_feedback
-from app.store.session_store import INTERVIEW_SESSION
 from app.schemas.evaluation import EvaluationResponse
+from app.repositories.interview_repository import InterviewRepository
+from fastapi import Depends
+import traceback
+from app.security.dependencies import get_current_user
 router = APIRouter(prefix="/evaluate", tags=["Evaluation"])
 
-# 🔥 ideally DB se aana chahiye
-from app.utils.data_loader import QUESTION_DB
 
 
 @router.post("/",response_model=EvaluationResponse)
 async def evaluate_answer_api(
     file: UploadFile = File(...),
-    question: str = Form(...)
+    question: str = Form(...),
+    current_user=Depends(get_current_user)
 ):
     try:
         # =========================
         # 🎤 STEP 1: Speech → Text
         # =========================
         audio_bytes = await file.read()
-
+        user_id = current_user["id"]
         transcript = speech_to_text(audio_bytes)  # ✅ DIRECT BYTES
 
         # =========================
@@ -38,7 +40,9 @@ async def evaluate_answer_api(
         # =========================
         # 📚 Expected Answer
         # =========================
-        data = INTERVIEW_SESSION.get(question)
+        repository = InterviewRepository()
+
+        data = await repository.get_by_question(user_id,question)
 
         if not data:
             raise HTTPException(
@@ -47,9 +51,9 @@ async def evaluate_answer_api(
             )
 
         expected_answer = data["expected_answer"]
-        # category = data["category"]
-        # difficulty = data["difficulty"]
-        # topic = data["topic"]
+        category = data["category"]
+        difficulty = data["difficulty"]
+        topic = data["topic"]
 
         # =========================
         # 🧠 ML Scoring
@@ -77,8 +81,7 @@ async def evaluate_answer_api(
             feedback=feedback
         )
 
+
     except Exception as e:
-        raise HTTPException(
-        status_code=500,
-        detail=f"Evaluation failed: {str(e)}"
-        )
+        traceback.print_exc()   # 👈 Terminal me full error print hoga
+        raise   

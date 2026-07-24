@@ -7,14 +7,12 @@ import { Loader2 } from "lucide-react";
 
 function Questions() {
   const { questions, setQuestions, setSelectedQuestion, isQuestionCompleted, generateAttemptId } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!questions) {
       fetchQuestions();
-    }
   }, []);
 
   const fetchQuestions = async () => {

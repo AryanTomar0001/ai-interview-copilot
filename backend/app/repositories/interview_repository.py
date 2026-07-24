@@ -8,7 +8,17 @@ class InterviewRepository:
     async def create(self, interview: dict):
         return await self.collection.insert_one(interview)
 
-    async def get_by_question(self, question: str):
+    async def get_by_question(
+    self,
+    user_id: str,
+    question: str
+    ):
         return await self.collection.find_one(
-            {"question": question}
+        {
+            "user_id": user_id,
+            "question": question
+        }
         )
+
+    async def delete_all(self):
+        return await self.collection.delete_many({})
