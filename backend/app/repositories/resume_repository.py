@@ -17,3 +17,7 @@ class ResumeRepository:
             {"user_id": user_id},
             sort=[("_id", -1)]
         )   
+    async def delete_by_user_id(self, user_id: str):
+        return await self.collection.delete_many(
+            {"user_id": user_id}
+        )

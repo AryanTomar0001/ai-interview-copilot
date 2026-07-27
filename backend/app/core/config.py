@@ -12,6 +12,12 @@ class Settings(BaseSettings):
 
     JWT_ALGORITHM: str = "HS256"
 
+    QDRANT_HOST: str
+
+    QDRANT_PORT: int
+    
+    QDRANT_COLLECTION: str
+
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore"
