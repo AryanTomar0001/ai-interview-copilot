@@ -20,8 +20,8 @@
 import requests
 import tempfile
 import os
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+from app.core.config import settings
+GROQ_API_KEY = settings.GROQ_API_KEY
 
 def speech_to_text(audio_bytes):
     temp_audio_path = None

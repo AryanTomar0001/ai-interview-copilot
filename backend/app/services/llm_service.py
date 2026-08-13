@@ -3,13 +3,13 @@ import json
 from typing import Dict, Any
 import re
 from groq import Groq
-
+from app.core.config import settings
 from dotenv import load_dotenv
 load_dotenv()
 
 class LLMService:
     def __init__(self):
-        api_key = os.getenv("GROQ_API_KEY")
+        api_key = settings.GROQ_API_KEY
 
         if not api_key:
             raise ValueError("GROQ_API_KEY not set in environment")
@@ -58,7 +58,7 @@ class LLMService:
                 "raw_response": text
             }
     # ================================
-    # 🔥 QUESTION GENERATION
+    #  QUESTION GENERATION
     # ================================
     def generate_questions(self, context: str) -> Dict[str, Any]:
         system_prompt = """
@@ -158,7 +158,18 @@ Return JSON:
             return self._safe_json_load(raw)
 
         except Exception as e:
-            return {"error": str(e)}
+            print("\n====== INVALID LLM JSON ======")
+            print(text)
+            print("==============================\n")
+
+            return {
+            "missing": [],
+            "improvements": [
+             "AI feedback could not be generated."
+            ],
+            "ideal_answer": "",
+            "error": str(e)
+    }
 
 
 # Singleton instance
