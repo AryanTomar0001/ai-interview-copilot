@@ -17,7 +17,7 @@ class LLMService:
         self.client = Groq(api_key=api_key)
 
         # 🔥 Best model (fast + free)
-        self.model="llama-3.1-8b-instant"
+        self.model="openai/gpt-oss-20b"
 
     # 🔥 Common LLM call (reusable)
     def _call_llm(self, system_prompt: str, user_prompt: str) -> str:
@@ -27,7 +27,8 @@ class LLMService:
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-            temperature=0.6
+            temperature=0.6,
+            max_tokens=5000
         )
 
         return response.choices[0].message.content.strip()
