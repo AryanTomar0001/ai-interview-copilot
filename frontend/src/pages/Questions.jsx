@@ -11,9 +11,22 @@ function Questions() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-      fetchQuestions();
-  }, []);
+useEffect(() => {
+    const hasQuestions =
+        questions &&
+        (
+            (questions.technical?.length > 0) ||
+            (questions.hr?.length > 0) ||
+            (questions.project?.length > 0)
+        );
+
+    if (hasQuestions) {
+        setLoading(false);
+        return;
+    }
+
+    fetchQuestions();
+}, []);
 
   const fetchQuestions = async () => {
     setLoading(true);
