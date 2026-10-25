@@ -1,22 +1,51 @@
+
 const Attempt = require('../models/Attempt');
-const User = require('../models/User');
 const crypto = require('crypto');
 
 exports.saveAttempt = async (req, res) => {
   try {
-    const { question, answer, score, feedback, attemptId } = req.body;
+    const {
+      interviewId,
+      questionId,
+      question,
+      category,
+      answer,
+      score,
+      feedback,
+      attemptId
+    } = req.body;
 
-    if (!question || !answer || score === undefined || !feedback) {
+    if (
+      !interviewId ||
+      !questionId ||
+      !question ||
+      !category ||
+      typeof answer !== 'string' ||
+      !answer.trim() ||
+      score === undefined ||
+      !Number.isFinite(score) ||
+      score < 0 ||
+      score > 100 ||
+      feedback == null
+    ) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide all required fields'
+        message: 'Please provide valid interview, question, answer, score and feedback fields'
       });
     }
 
+    if (!['technical', 'project', 'hr'].includes(category)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid question category'
+      });
+    }
+
+    // Idempotency: do not save the same submission twice.
     if (attemptId) {
-      const existingAttempt = await Attempt.findOne({ 
-        userId: req.user.id, 
-        attemptId 
+      const existingAttempt = await Attempt.findOne({
+        userId: req.user.id,
+        attemptId
       });
 
       if (existingAttempt) {
@@ -30,8 +59,11 @@ exports.saveAttempt = async (req, res) => {
 
     const attempt = await Attempt.create({
       userId: req.user.id,
+      interviewId,
+      questionId,
       question,
-      answer,
+      category,
+      answer: answer.trim(),
       score,
       feedback,
       attemptId: attemptId || crypto.randomBytes(16).toString('hex')
@@ -40,14 +72,17 @@ exports.saveAttempt = async (req, res) => {
     req.user.dailyAttempts += 1;
     await req.user.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: attempt
     });
+
   } catch (error) {
-    res.status(500).json({
+    console.error('Save attempt error:', error);
+
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message: 'Failed to save interview attempt'
     });
   }
 };

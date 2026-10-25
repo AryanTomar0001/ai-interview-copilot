@@ -1,191 +1,3 @@
-// import { useContext, useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { AppContext } from "../context/AppContext";
-// import ScoreCard from "../components/ScoreCard";
-// import { saveAttempt } from "../services/api";
-// import { Home, CheckCircle, AlertCircle, Lightbulb, FileText, LayoutDashboard } from "lucide-react";
-
-// function Result() {
-//   const { result, selectedQuestion, resetState, currentAttemptId, markQuestionCompleted } = useContext(AppContext);
-//   const navigate = useNavigate();
-//   const [saved, setSaved] = useState(false);
-//   const [errorMessage, setErrorMessage] = useState("");
-
-//   useEffect(() => {
-//     if (result && selectedQuestion && !saved && currentAttemptId) {
-//       saveAttemptToBackend();
-//     }
-//   }, [result, selectedQuestion, saved, currentAttemptId]);
-
-//   const saveAttemptToBackend = async () => {
-//     // 🔥 Step 1: check complete data
-//     if (!result.transcript || !result.feedback) {
-//       setErrorMessage("Processing not complete yet. Please wait...");
-//       return;
-//     }
-
-//     // 🔥 Step 2: check short/invalid answer
-//     if (!result.transcript.trim() || result.transcript.trim().length < 5) {
-//       setErrorMessage("Your answer is too short. Please try again.");
-//       return;
-//     }
-
-//     try {
-//       await saveAttempt({
-//         question: selectedQuestion.question,
-//         answer: result.transcript,
-//         score: result.evaluation?.score || 0,
-//         feedback: result.feedback,
-//         attemptId: currentAttemptId
-//       });
-
-//       setSaved(true);
-//       markQuestionCompleted(selectedQuestion.question);
-
-//     } catch (error) {
-//       setErrorMessage("Failed to save attempt. Please try again.");
-//     }
-//   };
-
-//   const handleStartOver = () => {
-//     resetState();
-//     navigate("/");
-//   };
-
-//   if (!result) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center p-6">
-//         <div className="bg-white rounded-xl shadow-md p-8 text-center">
-//           <p className="text-gray-600 mb-4">No results available</p>
-//           <button
-//             onClick={handleStartOver}
-//             className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-//           >
-//             Start Over
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   const { transcript, evaluation, feedback } = result;
-
-//   return (
-//     <>
-//       <div className="min-h-screen">
-//         <div className="max-w-4xl mx-auto px-4 md:px-6 py-6">
-//           <div className="mb-6">
-//             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-//               Interview Results
-//             </h1>
-//             <p className="text-sm md:text-base text-gray-600">
-//               Here's how you performed on your answer
-//             </p>
-//           </div>
-
-//           <div className="space-y-4 md:space-y-6">
-//             {errorMessage && (
-//               <div className="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
-//                 {errorMessage}
-//               </div>
-//             )}
-//             <ScoreCard score={evaluation?.score || 0} breakdown={evaluation?.breakdown} />
-
-//             {transcript && (
-//               <div className="bg-white rounded-xl shadow-md p-4 md:p-6">
-//                 <div className="flex items-center gap-2 mb-4">
-//                   <FileText className="w-5 h-5 text-blue-600" />
-//                   <h2 className="text-xl font-semibold text-gray-900">Your Answer Transcript</h2>
-//                 </div>
-//                 <div className="bg-gray-50 rounded-lg p-4">
-//                   <p className="text-gray-700 leading-relaxed">{transcript}</p>
-//                 </div>
-//               </div>
-//             )}
-
-//             {feedback && (
-//               <div className="bg-white rounded-xl shadow-md p-4 md:p-6">
-//                 <h2 className="text-xl font-semibold text-gray-900 mb-6">Detailed Feedback</h2>
-
-//                 {feedback.missing && feedback.missing.length > 0 && (
-//                   <div className="mb-4 md:mb-6">
-//                     <div className="flex items-center gap-2 mb-3">
-//                       <AlertCircle className="w-5 h-5 text-red-500" />
-//                       <h3 className="text-lg font-semibold text-red-600">Missing Points</h3>
-//                     </div>
-//                     <ul className="space-y-2">
-//                       {feedback.missing.map((item, i) => (
-//                         <li key={i} className="flex items-start gap-2">
-//                           <span className="text-red-500 mt-1 flex-shrink-0">•</span>
-//                           <span className="text-sm md:text-base text-gray-700 break-words">{item}</span>
-//                         </li>
-//                       ))}
-//                     </ul>
-//                   </div>
-//                 )}
-
-//                 {feedback.improvements && feedback.improvements.length > 0 && (
-//                   <div className="mb-4 md:mb-6">
-//                     <div className="flex items-center gap-2 mb-3">
-//                       <Lightbulb className="w-5 h-5 text-yellow-500" />
-//                       <h3 className="text-lg font-semibold text-yellow-600">Suggestions for Improvement</h3>
-//                     </div>
-//                     <ul className="space-y-2">
-//                       {feedback.improvements.map((item, i) => (
-//                         <li key={i} className="flex items-start gap-2">
-//                           <span className="text-yellow-500 mt-1 flex-shrink-0">•</span>
-//                           <span className="text-sm md:text-base text-gray-700 break-words">{item}</span>
-//                         </li>
-//                       ))}
-//                     </ul>
-//                   </div>
-//                 )}
-
-//                 {feedback.ideal_answer && (
-//                   <div>
-//                     <div className="flex items-center gap-2 mb-3">
-//                       <CheckCircle className="w-5 h-5 text-green-500" />
-//                       <h3 className="text-lg font-semibold text-green-600">Ideal Answer</h3>
-//                     </div>
-//                     <div className="bg-green-50 rounded-lg p-4 border border-green-200">
-//                       <p className="text-sm md:text-base text-gray-700 leading-relaxed break-words whitespace-normal">{feedback.ideal_answer}</p>
-//                     </div>
-//                   </div>
-//                 )}
-//               </div>
-//             )}
-
-//             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-//               <button
-//                 onClick={() => navigate("/questions")}
-//                 className="w-full bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors text-sm md:text-base"
-//               >
-//                 Back to Questions
-//               </button>
-//               <button
-//                 onClick={() => navigate("/dashboard")}
-//                 className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
-//               >
-//                 <LayoutDashboard className="w-4 h-4 md:w-5 md:h-5" />
-//                 Go to Dashboard
-//               </button>
-//               <button
-//                 onClick={handleStartOver}
-//                 className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 text-sm md:text-base"
-//               >
-//                 <Home className="w-4 h-4 md:w-5 md:h-5" />
-//                 Start Over
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default Result;
-
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
@@ -205,49 +17,84 @@ import {
   RotateCcw,
   Brain,
   ChevronRight,
+  Copy,
+  Check,
 } from "lucide-react";
 
 function Result() {
-  const { result, selectedQuestion, resetState, currentAttemptId, markQuestionCompleted } = useContext(AppContext);
+  
+  const {
+    result,
+    selectedQuestion,
+    resetState,
+    currentAttemptId,
+    markQuestionCompleted,
+    interviewId,
+  } = useContext(AppContext);
+
   const navigate = useNavigate();
   const [saved, setSaved] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (result && selectedQuestion && !saved && currentAttemptId) {
+    if (result && selectedQuestion && interviewId && !saved && currentAttemptId) {
       saveAttemptToBackend();
     }
-  }, [result, selectedQuestion, saved, currentAttemptId]);
+  }, [result, selectedQuestion, interviewId, saved, currentAttemptId]);
 
+ 
   const saveAttemptToBackend = async () => {
-    // 🔥 Step 1: check complete data
-    if (!result.transcript || !result.feedback) {
-      setErrorMessage("Processing not complete yet. Please wait...");
+    const evaluation = result?.evaluation;
+    const transcript = result?.transcript;
+
+    if (!transcript || !evaluation) {
+      setErrorMessage("Evaluation data is missing.");
       return;
     }
 
-    // 🔥 Step 2: check short/invalid answer
-    if (!result.transcript.trim() || result.transcript.trim().length < 5) {
+    if (transcript.trim().length < 5) {
       setErrorMessage("Your answer is too short. Please try again.");
+      return;
+    }
+    if (
+      !interviewId ||
+      !selectedQuestion?.question_id ||
+      !selectedQuestion?.category
+    ) {
+      setErrorMessage(
+        "Interview or question details are missing. Please return to Questions and try again."
+      );
       return;
     }
 
     try {
       await saveAttempt({
+        interviewId,
+        questionId: selectedQuestion.question_id,
+        category: selectedQuestion.category.toLowerCase(),
         question: selectedQuestion.question,
-        answer: result.transcript,
-        score: result.evaluation?.score || 0,
-        feedback: result.feedback,
-        attemptId: currentAttemptId
+        answer: transcript,
+        score: evaluation.score,
+        feedback: evaluation,
+        attemptId: currentAttemptId,
       });
 
+      markQuestionCompleted(selectedQuestion.question_id);
       setSaved(true);
-      markQuestionCompleted(selectedQuestion.question);
-
+      setErrorMessage("");
     } catch (error) {
-      setErrorMessage("Failed to save attempt. Please try again.");
+      console.error(
+        "Failed to save attempt:",
+        error.response?.data || error.message
+      );
+
+      setErrorMessage(
+        error.response?.data?.message ||
+          "Failed to save attempt. Please try again."
+      );
     }
   };
+
 
   const handleStartOver = () => {
     resetState();
@@ -283,7 +130,8 @@ function Result() {
     );
   }
 
-  const { transcript, evaluation, feedback } = result;
+  const { transcript, evaluation } = result;
+  const feedback = evaluation;
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
@@ -468,133 +316,218 @@ function Result() {
         )}
 
         {/* Feedback */}
-        {feedback && (
-          <div className="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden mb-6">
+   
+{/* Detailed AI Evaluation */}
+{feedback && (
+  <section className="mb-6 space-y-5">
+    {/* Section heading */}
+    <div className="flex items-center gap-3 px-1">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100">
+        <Sparkles className="h-5 w-5 text-violet-600" />
+      </div>
+      <div>
+        <h2 className="text-xl font-bold tracking-tight text-slate-900">
+          Detailed AI Evaluation
+        </h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Understand your performance and how to improve
+        </p>
+      </div>
+    </div>
 
-            <div className="px-5 sm:px-7 py-5 border-b border-slate-100">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-violet-600" />
-                </div>
-
-                <div>
-                  <h2 className="text-base sm:text-lg font-bold text-slate-900">
-                    Detailed Feedback
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-500">
-                    Review the key areas from your response
-                  </p>
-                </div>
-              </div>
+    {/* Overall feedback */}
+    {feedback.overall_feedback && (
+      <div className="relative overflow-hidden rounded-3xl border border-violet-200 bg-gradient-to-br from-violet-50 via-white to-blue-50 p-5 shadow-sm sm:p-7">
+        <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-violet-200/30 blur-3xl" />
+        <div className="relative">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-100">
+              <Brain className="h-5 w-5 text-violet-700" />
             </div>
-
-            <div className="p-5 sm:p-7 space-y-8">
-
-              {/* Missing points */}
-              {feedback.missing && feedback.missing.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center">
-                      <AlertCircle className="w-5 h-5 text-red-500" />
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-slate-900">
-                        Missing Points
-                      </h3>
-                      <p className="text-xs text-slate-500">
-                        Areas that were not covered
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2.5">
-                    {feedback.missing.map((item, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3 p-3.5 sm:p-4 rounded-xl bg-red-50/60 border border-red-100"
-                      >
-                        <span className="w-6 h-6 rounded-lg bg-red-100 text-red-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
-                          {i + 1}
-                        </span>
-
-                        <p className="text-sm text-slate-700 leading-relaxed break-words">
-                          {item}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Improvements */}
-              {feedback.improvements && feedback.improvements.length > 0 && (
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center">
-                      <Lightbulb className="w-5 h-5 text-amber-500" />
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-slate-900">
-                        Suggestions for Improvement
-                      </h3>
-                      <p className="text-xs text-slate-500">
-                        Practical ways to strengthen your answer
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2.5">
-                    {feedback.improvements.map((item, i) => (
-                      <div
-                        key={i}
-                        className="flex items-start gap-3 p-3.5 sm:p-4 rounded-xl bg-amber-50/60 border border-amber-100"
-                      >
-                        <span className="w-6 h-6 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold flex-shrink-0">
-                          {i + 1}
-                        </span>
-
-                        <p className="text-sm text-slate-700 leading-relaxed break-words">
-                          {item}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Ideal answer */}
-              {feedback.ideal_answer && (
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center">
-                      <CheckCircle className="w-5 h-5 text-emerald-600" />
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-slate-900">
-                        Ideal Answer
-                      </h3>
-                      <p className="text-xs text-slate-500">
-                        Reference answer for comparison
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="relative overflow-hidden rounded-2xl bg-emerald-50/70 border border-emerald-200 p-5 sm:p-6">
-                    <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-400" />
-
-                    <p className="text-sm sm:text-base text-slate-700 leading-8 break-words whitespace-pre-wrap">
-                      {feedback.ideal_answer}
-                    </p>
-                  </div>
-                </div>
-              )}
-
+            <div>
+              <h3 className="font-bold text-slate-900">
+                Overall Feedback
+              </h3>
+              <p className="text-xs text-slate-500">
+                AI assessment of your response
+              </p>
             </div>
           </div>
+          <p className="text-sm leading-7 text-slate-700 sm:text-base">
+            {feedback.overall_feedback}
+          </p>
+        </div>
+      </div>
+    )}
+
+    {/* Strengths */}
+    <div className="overflow-hidden rounded-3xl border border-emerald-200 bg-white shadow-sm">
+      <div className="border-b border-emerald-100 bg-emerald-50/70 p-5 sm:px-7">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100">
+            <CheckCircle className="h-5 w-5 text-emerald-700" />
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900">
+              Your Strengths
+            </h3>
+            <p className="text-xs text-slate-500">
+              What you did well in your answer
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3 p-5 sm:p-7">
+        {feedback.strengths?.length > 0 ? (
+          feedback.strengths.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-start gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/40 p-4"
+            >
+              <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+              <p className="text-sm leading-6 text-slate-700">{item}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-slate-500">
+            No specific strengths were provided for this answer.
+          </p>
         )}
+      </div>
+    </div>
+
+    {/* Missing points */}
+    <div className="overflow-hidden rounded-3xl border border-amber-200 bg-white shadow-sm">
+      <div className="border-b border-amber-100 bg-amber-50/70 p-5 sm:px-7">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100">
+            <AlertCircle className="h-5 w-5 text-amber-700" />
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900">
+              What You Missed
+            </h3>
+            <p className="text-xs text-slate-500">
+              Important points to include next time
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3 p-5 sm:p-7">
+        {feedback.missing?.length > 0 ? (
+          feedback.missing.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-start gap-3 rounded-2xl border border-amber-100 bg-amber-50/40 p-4"
+            >
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-xs font-bold text-amber-700">
+                {i + 1}
+              </span>
+              <p className="text-sm leading-6 text-slate-700">{item}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-slate-500">
+            No missing points were reported.
+          </p>
+        )}
+      </div>
+    </div>
+
+    {/* Incorrect claims */}
+    <div className="overflow-hidden rounded-3xl border border-rose-200 bg-white shadow-sm">
+      <div className="border-b border-rose-100 bg-rose-50/60 p-5 sm:px-7">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-100">
+            <AlertCircle className="h-5 w-5 text-rose-700" />
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900">
+              Incorrect Claims
+            </h3>
+            <p className="text-xs text-slate-500">
+              Statements that may need correction
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="p-5 sm:p-7">
+        {feedback.incorrect_claims?.length > 0 ? (
+          <div className="space-y-3">
+            {feedback.incorrect_claims.map((item, i) => (
+              <div
+                key={i}
+                className="flex items-start gap-3 rounded-2xl border border-rose-100 bg-rose-50/40 p-4"
+              >
+                <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-rose-600" />
+                <p className="text-sm leading-6 text-slate-700">
+                  {typeof item === "string"
+                    ? item
+                    : JSON.stringify(item)}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex items-start gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4">
+            <CheckCircle className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+            <p className="text-sm leading-6 text-slate-700">
+              No incorrect claims were identified in your answer.
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+
+    {/* Improvements */}
+    <div className="overflow-hidden rounded-3xl border border-blue-200 bg-white shadow-sm">
+      <div className="border-b border-blue-100 bg-blue-50/70 p-5 sm:px-7">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100">
+            <Lightbulb className="h-5 w-5 text-blue-700" />
+          </div>
+          <div>
+            <h3 className="font-bold text-slate-900">
+              Suggestions for Improvement
+            </h3>
+            <p className="text-xs text-slate-500">
+              Practical steps to strengthen your next answer
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-3 p-5 sm:p-7">
+        {feedback.improvements?.length > 0 ? (
+          feedback.improvements.map((item, i) => (
+            <div
+              key={i}
+              className="flex items-start gap-3 rounded-2xl border border-blue-100 bg-blue-50/40 p-4"
+            >
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-xs font-bold text-blue-700">
+                {i + 1}
+              </span>
+              <p className="text-sm leading-6 text-slate-700">{item}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-sm text-slate-500">
+            No improvement suggestions were provided.
+          </p>
+        )}
+      </div>
+    </div>
+
+    {/* Ideal answer */}
+    {feedback.ideal_answer && (
+      <IdealAnswerCard answer={feedback.ideal_answer} />
+    )}
+  </section>
+)}
+
 
         {/* Bottom actions */}
         <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-6 shadow-sm">
@@ -651,6 +584,70 @@ function Result() {
           </p>
         </div>
 
+      </div>
+    </div>
+  );
+}
+
+function IdealAnswerCard({ answer }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(answer);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    } catch (error) {
+      console.error("Failed to copy ideal answer:", error);
+    }
+  };
+
+  return (
+    <div className="overflow-hidden rounded-3xl border border-indigo-200 bg-white shadow-sm">
+      <div className="border-b border-indigo-100 bg-gradient-to-r from-indigo-50 to-violet-50 p-5 sm:px-7">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-100">
+              <FileText className="h-5 w-5 text-indigo-700" />
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-900">Ideal Answer</h3>
+              <p className="text-xs text-slate-500">
+                A reference answer to learn from
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200"
+          >
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                Copy Answer
+              </>
+            )}
+          </button>
+        </div>
+      </div>
+
+      <div className="p-5 sm:p-7">
+        <div className="rounded-2xl border border-indigo-100 bg-indigo-50/40 p-5 sm:p-6">
+          <p className="whitespace-pre-wrap break-words text-sm leading-7 text-slate-700 sm:text-base">
+            {answer}
+          </p>
+        </div>
+
+        <p className="mt-4 text-xs leading-5 text-slate-500">
+          Use this as a reference, understand the key points, and answer in your own words.
+        </p>
       </div>
     </div>
   );

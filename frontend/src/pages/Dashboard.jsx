@@ -198,7 +198,8 @@ import {
   Clock3,
   Brain,
   Play,
-} from 'lucide-react';
+  MessageSquareText,
+} from "lucide-react";
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -615,6 +616,38 @@ const Dashboard = () => {
           )}
 
         </div>
+
+      {/* Empty state when there are no interview attempts */}
+      {(stats?.totalAttempts || 0) === 0 && (
+        <div className="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+          <div className="relative px-6 py-10 text-center sm:px-10 sm:py-14">
+            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-blue-100/60 blur-3xl" />
+            <div className="absolute -bottom-10 -left-10 h-40 w-40 rounded-full bg-violet-100/50 blur-3xl" />
+
+            <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-950 shadow-lg">
+              <Brain className="h-8 w-8 text-blue-400" />
+            </div>
+
+            <h3 className="relative mt-6 text-xl font-bold text-slate-900 sm:text-2xl">
+              Your interview journey starts here
+            </h3>
+
+            <p className="relative mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-500 sm:text-base">
+              Complete your first practice interview to unlock your performance
+              statistics, review your answers, and discover areas to improve.
+            </p>
+
+            <button
+              onClick={() => navigate("/")}
+              className="relative mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-200"
+            >
+              <Play className="h-4 w-4 fill-current" />
+              Start Your First Interview
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
 
         {/* Feedback Modal */}
 

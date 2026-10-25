@@ -67,7 +67,7 @@ import { AppContext } from "../context/AppContext";
 
 export default function QuestionCard({ question, onSelect }) {
   const { isQuestionCompleted } = useContext(AppContext);
-  const completed = isQuestionCompleted(question.question);
+  const completed = isQuestionCompleted(question.question_id);
 
   const getDifficultyColor = (difficulty) => {
     switch (difficulty) {

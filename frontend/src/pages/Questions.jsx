@@ -1,145 +1,3 @@
-// import { useContext, useEffect, useState } from "react";
-// import { AppContext } from "../context/AppContext";
-// import API from "../services/api";
-// import { useNavigate } from "react-router-dom";
-// import QuestionCard from "../components/QuestionCard";
-// import { Loader2 } from "lucide-react";
-
-// function Questions() {
-//   const { questions, setQuestions, setSelectedQuestion, isQuestionCompleted, generateAttemptId } = useContext(AppContext);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState("");
-//   const navigate = useNavigate();
-
-// useEffect(() => {
-//     const hasQuestions =
-//         questions &&
-//         (
-//             (questions.technical?.length > 0) ||
-//             (questions.hr?.length > 0) ||
-//             (questions.project?.length > 0)
-//         );
-
-//     if (hasQuestions) {
-//         setLoading(false);
-//         return;
-//     }
-
-//     fetchQuestions();
-// }, []);
-
-//   const fetchQuestions = async () => {
-//     setLoading(true);
-//     setError("");
-//     try {
-//       const res = await API.get("/questions/generate");
-//       setQuestions(res.data);
-//     } catch (err) {
-//       setError(err.response?.data?.message || "Failed to generate questions. Please try again.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleSelect = (q) => {
-//     if (isQuestionCompleted(q.question)) {
-//       return;
-//     }
-//     setSelectedQuestion(q);
-//     generateAttemptId();
-//     navigate("/interview");
-//   };
-
-//   if (loading) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center">
-//         <div className="text-center">
-//           <Loader2 className="w-12 h-12 animate-spin text-gray-600 mx-auto mb-4" />
-//           <p className="text-gray-600 text-lg">Generating personalized questions...</p>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (error) {
-//     return (
-//       <div className="min-h-screen flex items-center justify-center p-6">
-//         <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
-//           <p className="text-red-600 mb-4">{error}</p>
-//           <button
-//             onClick={fetchQuestions}
-//             className="bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors"
-//           >
-//             Retry
-//           </button>
-//         </div>
-//       </div>
-//     );
-//   }
-
-//   if (!questions) return null;
-
-//   return (
-//     <>
-//       <div className="min-h-screen">
-//         <div className="max-w-4xl mx-auto px-4 md:px-6 py-6">
-//           <div className="mb-6">
-//             <h1 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-2">
-//               Your Interview Questions
-//             </h1>
-//             <p className="text-sm md:text-base text-gray-600 break-words whitespace-normal">
-//               Select a question to start practicing your answer
-//             </p>
-//           </div>
-
-//           <div className="flex flex-col gap-4">
-//           {questions.technical && questions.technical.length > 0 && (
-//             <div>
-//               <h2 className="text-base md:text-lg font-semibold text-gray-800 mb-3">
-//                 💻 Technical Questions
-//               </h2>
-//               <div className="flex flex-col gap-4">
-//                 {questions.technical.map((q, i) => (
-//                   <QuestionCard key={i} question={q} onSelect={handleSelect} />
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-
-//           {questions.hr && questions.hr.length > 0 && (
-//             <div>
-//               <h2 className="text-base md:text-lg font-semibold text-gray-800 mb-3">
-//                 👥 HR Questions
-//               </h2>
-//               <div className="flex flex-col gap-4">
-//                 {questions.hr.map((q, i) => (
-//                   <QuestionCard key={i} question={q} onSelect={handleSelect} />
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-
-//           {questions.project && questions.project.length > 0 && (
-//             <div>
-//               <h2 className="text-base md:text-lg font-semibold text-gray-800 mb-3">
-//                 🚀 Project-Based Questions
-//               </h2>
-//               <div className="flex flex-col gap-4">
-//                 {questions.project.map((q, i) => (
-//                   <QuestionCard key={i} question={q} onSelect={handleSelect} />
-//                 ))}
-//               </div>
-//             </div>
-//           )}
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default Questions;
-
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import API from "../services/api";
@@ -156,13 +14,18 @@ import {
 } from "lucide-react";
 
 function Questions() {
+
   const {
     questions,
     setQuestions,
     setSelectedQuestion,
     isQuestionCompleted,
     generateAttemptId,
+    interviewType,
+    totalQuestions: selectedTotalQuestions,
+    setInterviewId,
   } = useContext(AppContext);
+
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -178,6 +41,10 @@ function Questions() {
       );
 
     if (hasQuestions) {
+      if (questions.interview_id) {
+        setInterviewId(questions.interview_id);
+      }
+
       setLoading(false);
       return;
     }
@@ -185,32 +52,56 @@ function Questions() {
     fetchQuestions();
   }, []);
 
-  const fetchQuestions = async () => {
-    setLoading(true);
-    setError("");
 
-    try {
-      const res = await API.get("/questions/generate");
-      setQuestions(res.data);
-    } catch (err) {
-      setError(
+const fetchQuestions = async () => {
+  setLoading(true);
+  setError("");
+
+  try {
+    const res = await API.post("/questions/generate", {
+      mode: interviewType || "combined",
+      total_questions: selectedTotalQuestions ?? 10,
+    });
+
+    setQuestions(res.data);
+    setInterviewId(res.data.interview_id);
+  } catch (err) {
+    console.error(
+      "Generate questions error:",
+      err.response?.data || err.message
+    );
+
+    setError(
+      err.response?.data?.detail ||
         err.response?.data?.message ||
-          "Failed to generate questions. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+        "Failed to generate questions. Please try again."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handleSelect = (q) => {
-    if (isQuestionCompleted(q.question)) {
-      return;
-    }
+const handleSelect = (q) => {
+  if (isQuestionCompleted(q.question_id)) return;
 
-    setSelectedQuestion(q);
-    generateAttemptId();
-    navigate("/interview");
-  };
+  const category = questions.hr?.some(
+    (item) => item.question_id === q.question_id
+  )
+    ? "hr"
+    : questions.project?.some(
+        (item) => item.question_id === q.question_id
+      )
+      ? "project"
+      : "technical";
+
+  setSelectedQuestion({
+    ...q,
+    category,
+  });
+
+  generateAttemptId();
+  navigate("/interview");
+};
 
   if (loading) {
     return (
