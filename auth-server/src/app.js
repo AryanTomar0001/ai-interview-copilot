@@ -10,11 +10,16 @@ const resumeRoutes = require('./routes/resumeRoutes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/health', (req, res) => {
+  console.log("here");
+  
   res.status(200).json({ success: true, message: 'Server is running' });
 });
 

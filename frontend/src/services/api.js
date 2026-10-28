@@ -58,5 +58,10 @@ export const getUserStats = async () => {
   return response.data;
 };
 
+export const completeInterview = async (data) => {
+  const response = await AUTH_API.post("/attempt/complete", data);
+  return response.data;
+};
+
 export { AUTH_API };
 export default API;

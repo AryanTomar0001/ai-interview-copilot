@@ -11,7 +11,7 @@ import Interview from "./pages/Interview";
 import Result from "./pages/Result";
 import Dashboard from "./pages/Dashboard";
 import About from "./pages/About";
-
+import InterviewSummary from "./pages/InterviewSummary";
 function App() {
   return (
     <BrowserRouter>
@@ -57,6 +57,16 @@ function App() {
                   <ProtectedRoute>
                     <Layout>
                       <Result />
+                    </Layout>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/interview-summary"
+                element={
+                  <ProtectedRoute>
+                    <Layout>
+                      <InterviewSummary />
                     </Layout>
                   </ProtectedRoute>
                 }

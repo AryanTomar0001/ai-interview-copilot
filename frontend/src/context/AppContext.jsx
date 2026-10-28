@@ -1,3 +1,4 @@
+
 import { createContext, useState } from "react";
 
 export const AppContext = createContext();
@@ -6,20 +7,33 @@ export const AppProvider = ({ children }) => {
   const [questions, setQuestions] = useState(null);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
   const [result, setResult] = useState(null);
+
+  const [interviewId, setInterviewId] = useState(null);
+  const [interviewType, setInterviewType] = useState("combined");
+  const [totalQuestions, setTotalQuestions] = useState(10);
+
   const [resumeUploaded, setResumeUploaded] = useState(false);
   const [completedQuestions, setCompletedQuestions] = useState(new Set());
   const [currentAttemptId, setCurrentAttemptId] = useState(null);
 
-  const markQuestionCompleted = (questionText) => {
-    setCompletedQuestions(prev => new Set([...prev, questionText]));
-  };
+const markQuestionCompleted = (questionId) => {
+  if (!questionId) return;
 
-  const isQuestionCompleted = (questionText) => {
-    return completedQuestions.has(questionText);
-  };
+  setCompletedQuestions((prev) => {
+    const updated = new Set(prev);
+    updated.add(String(questionId));
+    return updated;
+  });
+};
+
+const isQuestionCompleted = (questionId) => {
+  if (!questionId) return false;
+
+  return completedQuestions.has(String(questionId));
+};
 
   const generateAttemptId = () => {
-    const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const id = crypto.randomUUID();
     setCurrentAttemptId(id);
     return id;
   };
@@ -28,6 +42,9 @@ export const AppProvider = ({ children }) => {
     setQuestions(null);
     setSelectedQuestion(null);
     setResult(null);
+    setInterviewId(null);
+    setInterviewType("combined");
+    setTotalQuestions(10);
     setResumeUploaded(false);
     setCompletedQuestions(new Set());
     setCurrentAttemptId(null);
@@ -42,6 +59,12 @@ export const AppProvider = ({ children }) => {
         setSelectedQuestion,
         result,
         setResult,
+        interviewId,
+        setInterviewId,
+        interviewType,
+        setInterviewType,
+        totalQuestions,
+        setTotalQuestions,
         resumeUploaded,
         setResumeUploaded,
         completedQuestions,
