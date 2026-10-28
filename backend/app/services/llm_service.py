@@ -565,6 +565,7 @@ Return valid JSON with exactly these keys:
 }}
 """
 
+        
         result = self._safe_json_load(
             self._call_llm(
                 system_prompt,
@@ -573,6 +574,10 @@ Return valid JSON with exactly these keys:
             )
         )
 
+        if not isinstance(result, dict):
+            raise ValueError("Evaluation response must be a JSON object")
+
+        # Validate score
         score = result.get("score")
 
         if (
@@ -583,26 +588,38 @@ Return valid JSON with exactly these keys:
         ):
             raise ValueError("Invalid evaluation score")
 
-        for field in (
+        # Normalize list fields.
+        # Missing or incorrectly formatted optional feedback fields
+        # should not fail the entire evaluation.
+        list_fields = (
             "strengths",
             "missing",
             "incorrect_claims",
-            "improvements"
-        ):
-            value = result.get(field)
+            "improvements",
+        )
 
-            if not isinstance(value, list) or not all(
-                isinstance(item, str) for item in value
-            ):
-                raise ValueError(
-                    f"Invalid evaluation field: {field}"
-                )
+        for field in list_fields:
+            value = result.get(field, [])
 
+            if value is None:
+                value = []
+
+            if isinstance(value, str):
+                value = [value] if value.strip() else []
+
+            if isinstance(value, list):
+                result[field] = [
+                    item.strip() if isinstance(item, str) else str(item)
+                    for item in value
+                    if item is not None and str(item).strip()
+                ]
+            else:
+                result[field] = []
+
+        # Normalize text fields
         for field in ("ideal_answer", "overall_feedback"):
-            if not isinstance(result.get(field), str):
-                raise ValueError(
-                    f"Invalid evaluation field: {field}"
-                )
+            value = result.get(field, "")
+            result[field] = value if isinstance(value, str) else str(value or "")
 
         return {
             "score": round(float(score), 2),
@@ -611,8 +628,9 @@ Return valid JSON with exactly these keys:
             "incorrect_claims": result["incorrect_claims"],
             "improvements": result["improvements"],
             "ideal_answer": result["ideal_answer"],
-            "overall_feedback": result["overall_feedback"]
+            "overall_feedback": result["overall_feedback"],
         }
+
 
     # ==========================================
     # 1. TECHNICAL ANSWER EVALUATION

@@ -194,14 +194,21 @@ async def generate_questions_from_resume(
                 **question,
                 "question_id": question_id
             })
+    
+    total_questions = sum(
+        len(saved_questions[category])
+        for category in ("technical", "hr", "project")
+    )
+
+    await repository.update_session(
+        interview_id,
+        {"total_questions": total_questions}
+    )
 
     return {
         "interview_id": interview_id,
         "mode": mode,
-        "total_questions": sum(
-            len(saved_questions[category])
-            for category in ("technical", "hr", "project")
-        ),
+        "total_questions": total_questions,
         **saved_questions
     }
 

@@ -179,15 +179,7 @@ function Interview() {
       {/* Top navigation */}
       <div className="border-b border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => navigate("/questions")}
-            className="group inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-white transition group-hover:border-slate-300 group-hover:bg-slate-50">
-              <ArrowLeft className="h-4 w-4" />
-            </div>
-            <span className="hidden sm:inline">Back to Questions</span>
-          </button>
+          <div className="w-24" aria-hidden="true" />
 
           <div className="flex items-center gap-2">
             <div className="hidden h-8 w-8 items-center justify-center rounded-lg bg-slate-900 sm:flex">
@@ -204,7 +196,7 @@ function Interview() {
               <Circle className="h-2.5 w-2.5 fill-emerald-500 text-emerald-500" />
 
               <span className="text-xs font-medium text-slate-600">
-                {limitInfo.used}/{limitInfo.limit} attempts
+                {limitInfo.used}/{limitInfo.limit} Max Questions Attempts
               </span>
             </div>
           )}
