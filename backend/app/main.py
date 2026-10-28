@@ -36,6 +36,7 @@ app = FastAPI(
 )
 
 # Replace/add origins according to your actual frontend URL.
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -43,11 +44,14 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
+        "https://www.aryantomarai.in",
+        "https://aryantomarai.in",
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 app.add_exception_handler(
     Exception,
